@@ -686,6 +686,50 @@ body {
   color: var(--lime);
 }
 
+/* ===== FEEDBACK ===== */
+.feedback-card {
+  background: var(--dark2);
+  border: 1px solid var(--dark4);
+  border-radius: 16px;
+  padding: 25px;
+  margin-bottom: 15px;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.feedback-stars {
+  color: #FFD700;
+  font-size: 1.1rem;
+}
+
+.feedback-name {
+  font-weight: 700;
+}
+
+.feedback-date {
+  color: var(--gray);
+  font-size: 0.8rem;
+}
+
+.feedback-text {
+  color: var(--gray);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+#starRating span {
+  transition: 0.2s;
+}
+
+#starRating span:hover {
+  transform: scale(1.2);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .navbar {

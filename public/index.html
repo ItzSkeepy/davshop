@@ -136,6 +136,53 @@
     </div>
   </section>
 
+  <!-- FEEDBACK -->
+<section class="section" id="feedback">
+  <h2 class="section-title">⭐ Avis clients</h2>
+  <p class="section-subtitle">Ce que nos clients pensent de nous.</p>
+
+  <div id="feedbackList" style="max-width: 800px; margin: 0 auto 40px;"></div>
+
+  <div class="form-container" style="max-width: 600px;">
+    <h3 style="text-align: center; margin-bottom: 25px;">Laissez votre avis</h3>
+    <form id="feedbackForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom <span class="required">*</span></label>
+          <input type="text" name="fbName" placeholder="Votre nom" required>
+        </div>
+        <div class="form-group">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" name="fbEmail" placeholder="votre@email.com" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Note <span class="required">*</span></label>
+        <div id="starRating" style="display: flex; gap: 8px; font-size: 2rem; cursor: pointer;">
+          <span data-star="1">☆</span>
+          <span data-star="2">☆</span>
+          <span data-star="3">☆</span>
+          <span data-star="4">☆</span>
+          <span data-star="5">☆</span>
+        </div>
+        <input type="hidden" name="fbRating" id="fbRatingInput" required>
+      </div>
+
+      <div class="form-group">
+        <label>Votre avis <span class="required">*</span></label>
+        <textarea name="fbMessage" placeholder="Partagez votre expérience..." required></textarea>
+      </div>
+
+      <div id="feedbackAlert"></div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        ⭐ Envoyer mon avis
+      </button>
+    </form>
+  </div>
+</section>
+
   <!-- FOOTER -->
   <footer class="footer">
     <p>© 2026 <span class="highlight">DavShop</span>. Tous droits réservés.</p>

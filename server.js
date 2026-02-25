@@ -16,6 +16,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // Routes API
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/feedback', require('./routes/feedback'));
 
 // Pages
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'index.html')));
