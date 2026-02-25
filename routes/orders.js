@@ -18,20 +18,16 @@ function auth(req, res, next) {
 // Créer une commande
 router.post('/', async (req, res) => {
   try {
-    console.log('📥 Données reçues:', req.body);
     const { name, email, phone, productLink, productDescription, quantity, address, message } = req.body;
 
     if (!name || !email || !phone || !productLink || !productDescription || !address) {
       return res.status(400).json({ error: 'Tous les champs obligatoires doivent être remplis.' });
     }
 
-    const order = new Order({ name, email, phone, productLink, productDescription, quantity, address, message });
+    const order = Order.createOrder({ name, email, phone, productLink, productDescription, quantity, address, message });
 
-    console.log('💾 Tentative de sauvegarde...');
-    await order.save();
     console.log('✅ Commande sauvegardée:', order.trackingId);
 
-    // Envoyer les emails (sans bloquer la réponse)
     notifyAdminNewOrder(order);
     notifyClientOrderConfirmed(order);
 
@@ -40,7 +36,7 @@ router.post('/', async (req, res) => {
       trackingId: order.trackingId
     });
   } catch (err) {
-    console.log('❌ ERREUR DÉTAILLÉE:', err);
+    console.log('❌ ERREUR:', err);
     res.status(500).json({ error: 'Erreur lors de la création de la commande.' });
   }
 });
@@ -48,7 +44,7 @@ router.post('/', async (req, res) => {
 // Suivre une commande
 router.get('/track/:trackingId', async (req, res) => {
   try {
-    const order = await Order.findOne({ trackingId: req.params.trackingId.toUpperCase() });
+    const order = Order.findByTrackingId(req.params.trackingId);
     if (!order) return res.status(404).json({ error: 'Commande non trouvée.' });
     res.json({
       trackingId: order.trackingId,
@@ -66,7 +62,7 @@ router.get('/track/:trackingId', async (req, res) => {
 // Admin - Lister les commandes
 router.get('/admin/all', auth, async (req, res) => {
   try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+    const orders = Order.findAll();
     res.json(orders);
   } catch (err) {
     res.status(500).json({ error: 'Erreur serveur.' });
@@ -77,15 +73,10 @@ router.get('/admin/all', auth, async (req, res) => {
 router.put('/admin/:id', auth, async (req, res) => {
   try {
     const { status, adminNotes } = req.body;
-    const order = await Order.findByIdAndUpdate(
-      req.params.id,
-      { status, adminNotes, updatedAt: Date.now() },
-      { new: true }
-    );
+    const order = Order.findByIdAndUpdate(req.params.id, { status, adminNotes });
 
     if (!order) return res.status(404).json({ error: 'Commande non trouvée.' });
 
-    // Notifier le client par email
     notifyClientStatusUpdate(order);
 
     res.json(order);
@@ -97,7 +88,7 @@ router.put('/admin/:id', auth, async (req, res) => {
 // Admin - Supprimer
 router.delete('/admin/:id', auth, async (req, res) => {
   try {
-    await Order.findByIdAndDelete(req.params.id);
+    Order.findByIdAndDelete(req.params.id);
     res.json({ message: 'Commande supprimée.' });
   } catch (err) {
     res.status(500).json({ error: 'Erreur serveur.' });

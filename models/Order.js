@@ -1,39 +1,74 @@
-const mongoose = require('mongoose');
+const fs = require('fs');
+const path = require('path');
 
-const orderSchema = new mongoose.Schema({
-  trackingId: {
-    type: String,
-    unique: true
-  },
-  name: { type: String, required: true },
-  email: { type: String, required: true },
-  phone: { type: String, required: true },
-  productLink: { type: String, required: true },
-  productDescription: { type: String, required: true },
-  quantity: { type: Number, required: true, default: 1 },
-  address: { type: String, required: true },
-  message: { type: String, default: '' },
-  status: {
-    type: String,
-    enum: ['Demande reçue', 'Commande passée', 'En livraison', 'Arrive bientôt', 'Livré'],
-    default: 'Demande reçue'
-  },
-  adminNotes: { type: String, default: '' },
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
-});
+const ordersFile = path.join(__dirname, '..', 'data', 'orders.json');
+const counterFile = path.join(__dirname, '..', 'data', 'counter.json');
 
-// Générer un ID de suivi unique avant de sauvegarder
-orderSchema.pre('save', async function() {
-  if (!this.trackingId) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let id = 'DAV-';
-    for (let i = 0; i < 8; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    this.trackingId = id;
-  }
-  this.updatedAt = Date.now();
-});
+function readOrders() {
+  const data = fs.readFileSync(ordersFile, 'utf8');
+  return JSON.parse(data);
+}
 
-module.exports = mongoose.model('Order', orderSchema);
+function writeOrders(orders) {
+  fs.writeFileSync(ordersFile, JSON.stringify(orders, null, 2));
+}
+
+function generateTrackingId() {
+  const counter = JSON.parse(fs.readFileSync(counterFile, 'utf8'));
+  counter.count += 1;
+  fs.writeFileSync(counterFile, JSON.stringify(counter));
+  return 'DAV-' + String(counter.count).padStart(4, '0');
+}
+
+function createOrder(data) {
+  const orders = readOrders();
+  const order = {
+    id: Date.now().toString(),
+    trackingId: generateTrackingId(),
+    name: data.name,
+    email: data.email,
+    phone: data.phone,
+    productLink: data.productLink,
+    productDescription: data.productDescription,
+    quantity: data.quantity || 1,
+    address: data.address,
+    message: data.message || '',
+    status: 'Demande reçue',
+    adminNotes: '',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  orders.push(order);
+  writeOrders(orders);
+  return order;
+}
+
+function findByTrackingId(trackingId) {
+  const orders = readOrders();
+  return orders.find(o => o.trackingId === trackingId.toUpperCase()) || null;
+}
+
+function findAll() {
+  const orders = readOrders();
+  return orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function findByIdAndUpdate(id, updates) {
+  const orders = readOrders();
+  const index = orders.findIndex(o => o.id === id);
+  if (index === -1) return null;
+  orders[index] = { ...orders[index], ...updates, updatedAt: new Date().toISOString() };
+  writeOrders(orders);
+  return orders[index];
+}
+
+function findByIdAndDelete(id) {
+  const orders = readOrders();
+  const index = orders.findIndex(o => o.id === id);
+  if (index === -1) return null;
+  const deleted = orders.splice(index, 1)[0];
+  writeOrders(orders);
+  return deleted;
+}
+
+module.exports = { createOrder, findByTrackingId, findAll, findByIdAndUpdate, findByIdAndDelete };
