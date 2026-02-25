@@ -12,12 +12,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 app.use('/api/orders', require('./routes/orders'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/feedback', require('./routes/feedback'));
 
 app.get('/{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => {
   console.log(`🚀 DavShop lancé sur http://localhost:${PORT}`);
 });
