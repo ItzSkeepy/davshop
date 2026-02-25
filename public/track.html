@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Suivi de commande - DavShop</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/" class="logo">Dav<span>Shop</span></a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Accueil</a></li>
+      <li><a href="/#how-it-works">Comment ça marche</a></li>
+      <li><a href="/#order-form">Commander</a></li>
+      <li><a href="/track">Suivi</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="section" style="padding-top: 140px; min-height: 100vh;">
+    <h2 class="section-title">📦 Suivre ma commande</h2>
+    <p class="section-subtitle">Entrez votre code de suivi pour voir l'état de votre commande.</p>
+
+    <div class="track-container">
+      <div class="track-input-group">
+        <input type="text" id="trackInput" placeholder="DAV-XXXXXXXX" maxlength="12">
+        <button class="btn btn-primary" onclick="trackOrder()">Rechercher</button>
+      </div>
+
+      <div id="trackAlert"></div>
+
+      <div class="track-result" id="trackResult">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <h3 id="resultTracking" style="color: var(--lime);"></h3>
+          <span class="status-badge" id="resultBadge"></span>
+        </div>
+        <p style="color: var(--gray); margin-bottom: 5px;">Produit: <span style="color: var(--white);" id="resultProduct"></span></p>
+        <p style="color: var(--gray); margin-bottom: 5px;">Quantité: <span style="color: var(--white);" id="resultQuantity"></span></p>
+        <p style="color: var(--gray); margin-bottom: 20px;">Demande faite le: <span style="color: var(--white);" id="resultDate"></span></p>
+
+        <div class="status-timeline" id="timeline">
+          <div class="timeline-step" data-status="Demande reçue">
+            <div class="timeline-dot">1</div>
+            <span class="timeline-label">Demande reçue</span>
+          </div>
+          <div class="timeline-step" data-status="Commande passée">
+            <div class="timeline-dot">2</div>
+            <span class="timeline-label">Commande passée</span>
+          </div>
+          <div class="timeline-step" data-status="En livraison">
+            <div class="timeline-dot">3</div>
+            <span class="timeline-label">En livraison</span>
+          </div>
+          <div class="timeline-step" data-status="Arrive bientôt">
+            <div class="timeline-dot">4</div>
+            <span class="timeline-label">Arrive bientôt</span>
+          </div>
+          <div class="timeline-step" data-status="Livré">
+            <div class="timeline-dot">5</div>
+            <span class="timeline-label">Livré ✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>© 2026 <span class="highlight">DavShop</span>. Tous droits réservés.</p>
+  </footer>
+
+  <script src="/js/track.js"></script>
+  <script>
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DavShop - Service de Commande en Ligne</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="/" class="logo">Dav<span>Shop</span></a>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Accueil</a></li>
+      <li><a href="#how-it-works">Comment ça marche</a></li>
+      <li><a href="#order-form">Commander</a></li>
+      <li><a href="/track">Suivi</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">🌍 Service de commande internationale</div>
+      <h1>Commandez n'importe quoi, <span class="highlight">de n'importe où.</span></h1>
+      <p>Envoyez-nous le lien du produit que vous voulez, on s'occupe de tout. Commande, paiement, livraison — vous recevez votre colis en ~2 semaines.</p>
+      <div class="hero-buttons">
+        <a href="#order-form" class="btn btn-primary">🛒 Passer une commande</a>
+        <a href="/track" class="btn btn-secondary">📦 Suivre ma commande</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="section" id="how-it-works">
+    <h2 class="section-title">Comment ça marche ?</h2>
+    <p class="section-subtitle">Un processus simple en 4 étapes pour recevoir vos produits du monde entier.</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-icon">🔗</div>
+        <div class="step-number">1</div>
+        <h3>Envoyez le lien</h3>
+        <p>Trouvez le produit que vous voulez sur n'importe quel site et envoyez-nous le lien via notre formulaire.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">💳</div>
+        <div class="step-number">2</div>
+        <h3>On s'occupe de tout</h3>
+        <p>Nous passons la commande pour vous, gérons le paiement et organisons la livraison.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">📦</div>
+        <div class="step-number">3</div>
+        <h3>Suivi en temps réel</h3>
+        <p>Suivez l'avancement de votre commande à tout moment grâce à votre code de suivi unique.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-icon">🎉</div>
+        <div class="step-number">4</div>
+        <h3>Recevez votre colis</h3>
+        <p>Votre colis arrive chez vous en environ 2 semaines. Simple, rapide, fiable.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMULAIRE DE COMMANDE -->
+  <section class="section" id="order-form" style="background: var(--dark2);">
+    <h2 class="section-title">Faire une demande</h2>
+    <p class="section-subtitle">Remplissez le formulaire ci-dessous et nous vous contacterons avec un devis.</p>
+
+    <div class="form-container" id="orderFormContainer">
+      <form id="orderForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom complet <span class="required">*</span></label>
+            <input type="text" name="name" placeholder="Votre nom" required>
+          </div>
+          <div class="form-group">
+            <label>Email <span class="required">*</span></label>
+            <input type="email" name="email" placeholder="votre@email.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Téléphone <span class="required">*</span></label>
+            <input type="tel" name="phone" placeholder="+243 XXX XXX XXX" required>
+          </div>
+          <div class="form-group">
+            <label>Quantité <span class="required">*</span></label>
+            <input type="number" name="quantity" min="1" value="1" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Lien du produit <span class="required">*</span></label>
+          <input type="url" name="productLink" placeholder="https://www.exemple.com/produit" required>
+        </div>
+
+        <div class="form-group">
+          <label>Description du produit <span class="required">*</span></label>
+          <textarea name="productDescription" placeholder="Décrivez le produit (taille, couleur, modèle...)" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Adresse de livraison <span class="required">*</span></label>
+          <textarea name="address" placeholder="Votre adresse complète de livraison" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Message (optionnel)</label>
+          <textarea name="message" placeholder="Des instructions spéciales ?"></textarea>
+        </div>
+
+        <div id="formAlert"></div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          🚀 Envoyer ma demande
+        </button>
+      </form>
+    </div>
+
+    <!-- Succès -->
+    <div class="form-container success-message" id="successMessage">
+      <div class="success-icon">✅</div>
+      <h3>Demande envoyée avec succès !</h3>
+      <p style="color: var(--gray); margin-bottom: 10px;">Votre code de suivi :</p>
+      <div class="tracking-code" id="trackingCode"></div>
+      <p style="color: var(--gray); margin-top: 20px;">Conservez ce code pour suivre votre commande. Nous vous contacterons bientôt avec un devis.</p>
+      <a href="/track" class="btn btn-primary" style="margin-top: 20px;">📦 Suivre ma commande</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>© 2026 <span class="highlight">DavShop</span>. Tous droits réservés.</p>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
